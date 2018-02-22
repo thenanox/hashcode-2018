@@ -1,0 +1,34 @@
+{
+  "name": "hashcode-pizza",
+  "version": "0.1.0",
+  "description": "Hashcode pizza test problem 2018",
+  "main": "lib/index.js",
+  "bin": {
+    "hashcode": "bin/cli.js"
+  },
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "prepublish": "yarn run build",
+    "test": "node_modules/.bin/mocha spec/**/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thenanox/hashcode-pizza.git"
+  },
+  "author": "thenanox@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thenanox/hashcode-pizza/issues"
+  },
+  "homepage": "https://github.com/thenanox/hashcode-pizza#readme",
+  "dependencies": {
+    "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "chai": "^4.1.2",
+    "flow-bin": "^0.66.0",
+    "mocha": "^3.5.3"
+  }
+}
