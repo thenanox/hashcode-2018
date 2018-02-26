@@ -1,26 +1,19 @@
 #!/usr/bin/env node
 
-const hashcode = require('../lib'),
-      fs = require('fs');
+const hashcode = require('../src'),
+      path = require('path');
 
-require('yargs')
-.usage('$0 <cmd> [args]')
-.command('pizza [file]', 'Hashcode Pizza 2018 baby!', (yargs) => {
-  yargs.positional('file', {
-    type: 'string',
-    describe: 'Default input file'
-  })
-}, function (argv) {
-  console.log('Loading input file... ' + argv.file);
-  fs.readFile(argv.file, (error,data) => {
-    if(error) {
-      console.error('Error loading file ', error);
-    } else {
-      console.log(hashcode(data.toString()));
-    } 
-  })
-})
-.help()
-.argv;
+const args = require('yargs')
+  .usage(`pizza [args]`)
+  .example('Basic usage', `pizza -i example.in`)
+  .example('Basic usage with output file', `pizza -i example.in -o example.out`)
+  .alias('i', 'input')
+  .describe('i', 'path to input file to pizzagorithm')
+  .require('i', 'is mandatory an input file to process')
+  .alias('o', 'output')
+  .describe('o', 'destination file to generate solved pizza. Default value is pizza.out')
+  .default('o', 'pizza.out')
+  .help()
+  .argv;
 
-
+hashcode(path.resolve(args.input), path.resolve(args.output));

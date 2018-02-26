@@ -1,11 +1,15 @@
-// @flow
-import { inputLoader, prepareOutput } from './io-loader';
-import { obtainSolution } from './solution';
+const io = require('./io-loader');
 
-function hashcode(inputFile: string) {
-    const model = inputLoader(inputFile);
-    const resolvedModel = obtainSolution(model);
-    return prepareOutput(resolvedModel);
+function hashcode(inputFile, outputFile) {
+    const model = io.inputLoader(inputFile).then(function(data){
+        const resolvedModel = obtainSolution(data.toString());
+        return io.prepareOutput(outputFile, resolvedModel);
+    });
+}
+
+function obtainSolution(model){
+    //Fill with algorithm
+    return model;
 }
 
 module.exports = hashcode;

@@ -1,17 +1,14 @@
-// @flow
-function input(inputFile: string) {
-    const lines = inputFile.split('\n');
-    return {
-        cases: obtainCases(lines[0]),
-        pizza: obtainPizza(lines.slice(1,-1))
-    }
+const fs = require('fs-extra');
+
+async function input(inputFile) {
+    return await fs.readFile(inputFile);
 }
 
-function output(model: {}) {
-    return model;
+async function output(outputFile, model) {
+    return await fs.writeFile(outputFile, model);
 }
 
-function obtainCases(line: string) {
+function obtainCases(line) {
     const cases = line.split(' ');
     return {
         R: parseInt(cases[0]),
@@ -21,7 +18,7 @@ function obtainCases(line: string) {
     }    
 }
 
-function obtainPizza(lines: string[]) {
+function obtainPizza(lines) {
     const pizza = [];
     for(let i = 0; i < lines.length; i++) {
         const pizzaRow = [];
