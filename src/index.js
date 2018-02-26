@@ -1,13 +1,12 @@
 const io = require('./io-loader');
 
-function hashcode(inputFile, outputFile) {
-    const model = io.inputLoader(inputFile).then(function(data){
-        const resolvedModel = obtainSolution(data.toString());
-        return io.prepareOutput(outputFile, resolvedModel);
-    });
+async function hashcode(inputFile, outputFile) {
+    const model = await io.inputLoader(inputFile);
+    const resolvedModel = await obtainSolution(model.toString());
+    io.prepareOutput(outputFile, resolvedModel);
 }
 
-function obtainSolution(model){
+async function obtainSolution(model){
     //Fill with algorithm
     return model;
 }
