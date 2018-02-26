@@ -1,11 +1,13 @@
 const fs = require('fs-extra');
 
 async function input(inputFile) {
-    return await fs.readFile(inputFile);
+    const content = await fs.readFile(inputFile);
+    return obtainPizza(content.toString());
 }
 
 async function output(outputFile, model) {
-    return await fs.writeFile(outputFile, model);
+    const outputModel = obtainSolution(model);
+    return await fs.writeFile(outputFile, outputModel);
 }
 
 function obtainCases(line) {
@@ -18,16 +20,31 @@ function obtainCases(line) {
     }    
 }
 
-function obtainPizza(lines) {
+function obtainPizza(content) {
+    const lines = content.split('\n');
+    const pizzaLines = lines.slice(1,-1);
+    const model = Object.assign({}, obtainCases(lines[0]));
     const pizza = [];
-    for(let i = 0; i < lines.length; i++) {
+    for(let i = 0; i < pizzaLines.length; i++) {
         const pizzaRow = [];
-        for(let j = 0; j < lines[i].length; j++) {
-            pizzaRow.push(lines[i][j]);
+        for(let j = 0; j < pizzaLines[i].length; j++) {
+            pizzaRow.push(pizzaLines[i][j]);
         }
         pizza.push(pizzaRow);
     }
-    return pizza;
+    model.pizza = pizza;
+    return model;
+}
+
+function obtainSolution(model){
+    let outputModel = model.S+'\n';
+    for(let i = 0; i < model.S; i++) {
+        for(let j = 0; j <= 3; j++) {
+            outputModel+=model.cuts[i][j] + ' ';
+        }
+        outputModel+='\n';
+    }
+    return outputModel;
 }
 
 module.exports = {
