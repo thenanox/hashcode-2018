@@ -3,6 +3,13 @@
 ```javascript
 
 yarn install
-yarn run flow
 yarn test
+```
+
+### CLI Usage
+
+```javascript
+
+npm link
+./pizza -i example.in -o example.out
 ```
