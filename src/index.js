@@ -89,6 +89,7 @@ function pick(pool) {
     // this.trip = pool.shift();
     const possibleTrips = pool.slice(0, 3);
     const possibleTimes = possibleTrips.map(trip => this.calculateBusy(trip));
+    console.log(possibleTimes);
     const minTime = Math.min(possibleTimes);
     const minTimeIndex = possibleTimes.indexOf(minTime);
     this.trip = pool[minTimeIndex];
