@@ -87,19 +87,26 @@ function calculateBusy(trip) {
 
 function pick(pool) {
     // this.trip = pool.shift();
+    console.log('pool', pool);
     const possibleTrips = pool.slice(0, 3);
     const possibleTimes = possibleTrips.map(trip => this.calculateBusy(trip));
     console.log(possibleTimes);
-    const minTime = Math.min(possibleTimes);
+    const minTime = Math.min(...possibleTimes);
+    console.log('minTime', minTime);
     const minTimeIndex = possibleTimes.indexOf(minTime);
+    console.log('minTimeIndex', minTimeIndex);
     this.trip = pool[minTimeIndex];
-    pool = [...pool.slice(0, minTimeIndex), ...pool.slice(minTimeIndex + 1, pool.length - 1)];
+    console.log('this.trip', this.trip);
+    pool.splice(minTimeIndex, 1) //= [...pool.slice(0, minTimeIndex), ...pool.slice(minTimeIndex + 1, pool.length)];
+    console.log('new pool', pool);
     this.tripsLog.push(this.trip);
+    console.log('this.tripsLog', this.tripsLog);
     // console.log('busy', this.busy);
     // console.log('first', this.calculateDistance(this.position, this.trip.start));    
     // console.log('second', calculateTime(this.trip.early));    
     // console.log('third', this.calculateDistance(this.trip.start, this.trip.end)); 
     this.busy = possibleTimes[minTimeIndex];
+    console.log('this.busy', this.busy);
 }
 
 function move() {
