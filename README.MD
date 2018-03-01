@@ -24,12 +24,12 @@ Test CLI command:
 ```javascript
 
 Individual:
-node bin/cli.js -i spec/fixtures/a_example.in -o spec/fixtures/a_example.out
-node bin/cli.js -i spec/fixtures/b_should_be_easy.in -o spec/fixtures/b_should_be_easy.out
-node bin/cli.js -i spec/fixtures/c_no_hurry.in -o spec/fixtures/c_no_hurry.out
-node bin/cli.js -i spec/fixtures/d_metropolis.in -o spec/fixtures/d_metropolis.out
-node bin/cli.js -i spec/fixtures/e_high_bonus.in -o spec/fixtures/e_high_bonus.out
+node bin/cli.js -i in/a_example.in -o out/a_example.out
+node bin/cli.js -i in/b_should_be_easy.in -o out/b_should_be_easy.out
+node bin/cli.js -i in/c_no_hurry.in -o out/c_no_hurry.out
+node bin/cli.js -i in/d_metropolis.in -o out/d_metropolis.out
+node bin/cli.js -i in/e_high_bonus.in -o out/e_high_bonus.out
 
-All:
+All (it takes everything from in, and save them on out):
 node bin/cli.js -a
 ```
