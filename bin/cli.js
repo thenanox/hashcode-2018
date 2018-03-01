@@ -15,17 +15,17 @@ const args = require('yargs')
   .describe('o', 'destination file to generate solved rides. Default value is rides.out')
   .alias('a', 'all')  
   .describe('all', 'flag to generate all outs')
-  .default('all', 'false')
+  .default('all', false)
   .help()
   .argv;
 
 if(args.all) {
-  hashcode(path.resolve('fixtures/a_example.in'), path.resolve('fixtures/a_example.out'));
-  hashcode(path.resolve('fixtures/b_should_be_easy.in'), path.resolve('fixtures/b_should_be_easy.out'));
-  hashcode(path.resolve('fixtures/c_no_hurry.in'), path.resolve('fixtures/c_no_hurry.out'));
-  hashcode(path.resolve('fixtures/d_metropolis.in'), path.resolve('fixtures/d_metropolis.out'));
-  hashcode(path.resolve('fixtures/e_high_bonus.in'), path.resolve('fixtures/e_high_bonus.out'));
-  zipFolder(path.resolve(path.join(__dirname, '../hashcode-2018')), path.resolve('fixtures/hashcode.zip'), function(err) {
+  hashcode(path.resolve('in/a_example.in'), path.resolve('out/a_example.out'));
+  hashcode(path.resolve('in/b_should_be_easy.in'), path.resolve('out/b_should_be_easy.out'));
+  hashcode(path.resolve('in/c_no_hurry.in'), path.resolve('out/c_no_hurry.out'));
+  hashcode(path.resolve('in/d_metropolis.in'), path.resolve('out/d_metropolis.out'));
+  hashcode(path.resolve('in/e_high_bonus.in'), path.resolve('out/e_high_bonus.out'));
+  zipFolder(path.resolve(path.join(__dirname, '../hashcode-2018')), path.resolve('out/hashcode.zip'), function(err) {
     if(err) {
         console.log('Error zipping code!', err);
     } else {
