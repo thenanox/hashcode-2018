@@ -4,15 +4,15 @@ const hashcode = require('../src'),
       path = require('path');
 
 const args = require('yargs')
-  .usage(`pizza [args]`)
-  .example('Basic usage', `pizza -i example.in`)
-  .example('Basic usage with output file', `pizza -i example.in -o example.out`)
+  .usage(`rides [args]`)
+  .example('Basic usage', `rides -i example.in`)
+  .example('Basic usage with output file', `rides -i example.in -o example.out`)
   .alias('i', 'input')
-  .describe('i', 'path to input file to pizzagorithm')
+  .describe('i', 'path to input file to ridesgorithm')
   .require('i', 'is mandatory an input file to process')
   .alias('o', 'output')
-  .describe('o', 'destination file to generate solved pizza. Default value is pizza.out')
-  .default('o', 'pizza.out')
+  .describe('o', 'destination file to generate solved rides. Default value is rides.out')
+  .default('o', 'rides.out')
   .help()
   .argv;
 

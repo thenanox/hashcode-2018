@@ -2,12 +2,11 @@ const fs = require('fs-extra');
 
 async function input(inputFile) {
     const content = await fs.readFile(inputFile);
-    return obtainPizza(content.toString());
+    return obtainInput(content.toString());
 }
 
 async function output(outputFile, model) {
-    const outputModel = obtainSolution(model);
-    return await fs.writeFile(outputFile, outputModel);
+    return await fs.writeFile(outputFile, model);
 }
 
 function obtainCases(line) {
@@ -15,24 +14,29 @@ function obtainCases(line) {
     return {
         R: parseInt(cases[0]),
         C: parseInt(cases[1]),
-        L: parseInt(cases[2]),
-        H: parseInt(cases[3]),
+        F: parseInt(cases[2]),
+        N: parseInt(cases[3]),
+        B: parseInt(cases[4]),
+        T: parseInt(cases[5])
     }    
 }
 
-function obtainPizza(content) {
+function obtainInput(content) {
     const lines = content.split('\n');
-    const pizzaLines = lines.slice(1,-1);
+    const tripsLines = lines.slice(1,-1);
     const model = Object.assign({}, obtainCases(lines[0]));
-    const pizza = [];
-    for(let i = 0; i < pizzaLines.length; i++) {
-        const pizzaRow = [];
-        for(let j = 0; j < pizzaLines[i].length; j++) {
-            pizzaRow.push(pizzaLines[i][j]);
-        }
-        pizza.push(pizzaRow);
+    const trips = [];
+    for(let i = 0; i < tripsLines.length; i++) {
+        const tripLine = tripsLines[i].split(' ');
+        const trip = {};
+        trip.index = i;
+        trip.start = {x: parseInt(tripLine[0]), y: parseInt(tripLine[1])};
+        trip.end = {x: parseInt(tripLine[2]), y: parseInt(tripLine[3])};
+        trip.early = parseInt(tripLine[4]);
+        trip.finish = parseInt(tripLine[5]);
+        trips.push(trip);
     }
-    model.pizza = pizza;
+    model.trips = trips;
     return model;
 }
 
