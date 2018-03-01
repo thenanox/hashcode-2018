@@ -55,6 +55,7 @@ function createCars(cars) {
         car.isFinished = isFinished;
         car.move = move;
         car.print = print;
+        car.calculateBusy = calculateBusy;
         carsList.push(car);
     }
     return carsList;
@@ -78,16 +79,26 @@ function update(pool) {
     }
 }
 
+function calculateBusy(trip) {
+    return this.calculateDistance(this.position, trip.start) +
+            calculateTime(trip.early) +
+            this.calculateDistance(trip.start, trip.end);
+}
+
 function pick(pool) {
-    this.trip = pool.shift();
+    // this.trip = pool.shift();
+    const possibleTrips = pool.slice(0, 3);
+    const possibleTimes = possibleTrips.map(trip => this.calculateBusy(trip));
+    const minTime = Math.min(possibleTimes);
+    const minTimeIndex = possibleTimes.indexOf(minTime);
+    this.trip = pool[minTimeIndex];
+    pool = [...pool.slice(0, minTimeIndex), ...pool.slice(minTimeIndex + 1, pool.length - 1)];
     this.tripsLog.push(this.trip);
     // console.log('busy', this.busy);
     // console.log('first', this.calculateDistance(this.position, this.trip.start));    
     // console.log('second', calculateTime(this.trip.early));    
     // console.log('third', this.calculateDistance(this.trip.start, this.trip.end)); 
-    this.busy = this.calculateDistance(this.position, this.trip.start) +
-                calculateTime(this.trip.early) +
-                this.calculateDistance(this.trip.start, this.trip.end);
+    this.busy = possibleTimes[minTimeIndex];
 }
 
 function move() {
