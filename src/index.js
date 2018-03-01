@@ -12,11 +12,6 @@ async function hashcode(inputFile, outputFile) {
     io.prepareOutput(outputFile, solution);
 }
 
-async function obtainSolution(model){
-    const mock = {};
-    return mock;
-}
-
 function createTripPool(trips){
     const pool = trips.slice(0);
     pool.sort( (a, b) => parseInt(a.early) - parseInt(b.early));
