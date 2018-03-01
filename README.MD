@@ -24,11 +24,11 @@ Test CLI command:
 ```javascript
 
 Individual:
-node bin/cli.js -i spec/fixtures/a_example.in -o spec/fixtures/a_example.out
-node bin/cli.js -i spec/fixtures/b_should_be_easy.in -o spec/fixtures/b_should_be_easy.out
-node bin/cli.js -i spec/fixtures/c_no_hurry.in -o spec/fixtures/c_no_hurry.out
-node bin/cli.js -i spec/fixtures/d_metropolis.in -o spec/fixtures/d_metropolis.out
-node bin/cli.js -i spec/fixtures/e_high_bonus.in -o spec/fixtures/e_high_bonus.out
+node bin/cli.js -i fixtures/a_example.in -o fixtures/a_example.out
+node bin/cli.js -i fixtures/b_should_be_easy.in -o fixtures/b_should_be_easy.out
+node bin/cli.js -i fixtures/c_no_hurry.in -o fixtures/c_no_hurry.out
+node bin/cli.js -i fixtures/d_metropolis.in -o fixtures/d_metropolis.out
+node bin/cli.js -i fixtures/e_high_bonus.in -o fixtures/e_high_bonus.out
 
 All:
 node bin/cli.js -a
