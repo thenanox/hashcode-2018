@@ -14,12 +14,11 @@ async function hashcode(inputFile, outputFile) {
 
 function createTripPool(trips){
     const pool = trips.slice(0);
-    pool.sort( (a, b) => parseInt(a.early) - parseInt(b.early));
     return pool;
 }
 
 function startSimulation(model, pool) {
-    const cars = createCars(model.F);
+    const cars = createCars(model);
     for(time = 0; time < model.T; time++) {
         if(simulationFinished(cars, pool)) {
             break;
@@ -37,9 +36,9 @@ function simulationFinished(cars, pool) {
     }
 }
 
-function createCars(cars) {
+function createCars(model) {
     const carsList = [];
-    for(let i = 0; i < cars; i++) {
+    for(let i = 0; i < model.F; i++) {
         const car = {};
         car.busy = 0;
         car.index = i;
@@ -52,8 +51,9 @@ function createCars(cars) {
         car.update = update;
         car.pick = pick;
         car.calculateDistance = calculateDistance;
-        car.isFinished = isFinished;
+        car.bestTrip = bestTrip;
         car.move = move;
+        car.bonus = model.B;
         car.print = print;
         car.calculateBusy = calculateBusy;
         carsList.push(car);
@@ -70,7 +70,7 @@ function step(cars, pool) {
 
 function update(pool) {
     // console.log(this.busy)
-    if(!this.busy || this.isFinished()) {
+    if(!this.busy) {
         // console.log('PICK', this.index);
         this.pick(pool);
     } else {
@@ -80,33 +80,36 @@ function update(pool) {
 }
 
 function calculateBusy(trip) {
-    return this.calculateDistance(this.position, trip.start) +
-            calculateTime(trip.early) +
-            this.calculateDistance(trip.start, trip.end);
+    const preDistance = this.calculateDistance(this.position, trip.start);
+    const time = calculateTime(trip.early);
+    const postDistance = this.calculateDistance(trip.start, trip.end);
+    // console.log(preDistance, time, postDistance)
+    return preDistance + time + postDistance;
 }
 
 function pick(pool) {
-    // this.trip = pool.shift();
-    // console.log('pool', pool);
-    const possibleTrips = pool.slice(0);
-    const possibleTimes = possibleTrips.map(trip => this.calculateBusy(trip));
-    // console.log(possibleTimes);
-    const minTime = Math.min(...possibleTimes);
-    // console.log('minTime', minTime);
-    const minTimeIndex = possibleTimes.indexOf(minTime);
-    // console.log('minTimeIndex', minTimeIndex);
-    this.trip = pool[minTimeIndex];
-    // console.log('this.trip', this.trip);
-    pool.splice(minTimeIndex, 1) //= [...pool.slice(0, minTimeIndex), ...pool.slice(minTimeIndex + 1, pool.length)];
-    // console.log('new pool', pool);
+    // this.trip = pool.shift()
+    this.trip = this.bestTrip(pool);
+    pool.splice(pool.indexOf(this.trip), 1);
     this.tripsLog.push(this.trip);
-    // console.log('this.tripsLog', this.tripsLog);
-    // console.log('busy', this.busy);
-    // console.log('first', this.calculateDistance(this.position, this.trip.start));    
-    // console.log('second', calculateTime(this.trip.early));    
-    // console.log('third', this.calculateDistance(this.trip.start, this.trip.end)); 
-    this.busy = possibleTimes[minTimeIndex];
-    // console.log('this.busy', this.busy);
+    this.busy = this.calculateBusy(this.trip);
+    this.position = this.trip.end;    
+}
+
+function bestTrip(pool) {
+    const bestTrip = pool.reduce((prev, next) => {
+        const score = calculateScore(this, next);
+        // if(prev.score === score && score > 0) {
+        //     // console.log('equal', prev.score, score);     
+        //     // console.log('earlys', prev.trip.early, next.early);
+        //     return prev.early > next.early ? {trip: next, score: score} : prev;
+        // } else {
+            // console.log('distinct', prev.score, score);            
+            return prev.score < score ? {trip: next, score: score} : prev;
+        // }
+    }, {trip: {}, score: -1});
+    // console.log(bestTrip.trip)
+    return bestTrip.trip;
 }
 
 function move() {
@@ -117,9 +120,16 @@ function print() {
     return this.tripsLog.length + ' ' + this.tripsLog.map( trip => trip.index).join(' ');
 }
 
-function isFinished() {
-    // console.log(!this.calculateDistance(this.position, this.trip.end) ? 'finished' : 'not finished');
-    return !this.calculateDistance(this.position, this.trip.end);
+function calculateScore(car, trip) {
+    // console.log('input', car.index, trip.index)
+    const distanceToBegin = calculateDistance(car.position, trip.start);
+    // console.log('pre', time, distanceToBegin, trip.early)
+    const bonusArrival = time + distanceToBegin <= trip.early ? car.bonus : 0;
+    const distanceToEnd = calculateDistance(trip.start, trip.end);
+    // console.log('post', time, distanceToBegin, distanceToEnd, trip.finish)    
+    const bonusDistance = time + distanceToBegin + distanceToEnd < trip.finish ? distanceToEnd : 0;
+    // console.log('bonus', bonusArrival, bonusDistance)
+    return bonusArrival + bonusDistance;
 }
 
 function calculateDistance(position, end) {
