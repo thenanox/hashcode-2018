@@ -63,18 +63,14 @@ function createCars(model) {
 
 function step(cars, pool) {
     cars.forEach( car => {
-        // console.log('UPDATE', car.index);
         car.update(pool);
     })
 }
 
 function update(pool) {
-    // console.log(this.busy)
     if(!this.busy) {
-        // console.log('PICK', this.index);
         this.pick(pool);
-    } else {
-        // console.log('MOVE', this.index);        
+    } else {      
         this.move();
     }
 }
@@ -83,12 +79,10 @@ function calculateBusy(trip) {
     const preDistance = this.calculateDistance(this.position, trip.start);
     const time = calculateTime(trip.early);
     const postDistance = this.calculateDistance(trip.start, trip.end);
-    // console.log(preDistance, time, postDistance)
     return preDistance + time + postDistance;
 }
 
 function pick(pool) {
-    // this.trip = pool.shift()
     this.trip = this.bestTrip(pool);
     pool.splice(pool.indexOf(this.trip), 1);
     this.tripsLog.push(this.trip);
@@ -98,17 +92,9 @@ function pick(pool) {
 
 function bestTrip(pool) {
     const bestTrip = pool.reduce((prev, next) => {
-        const score = calculateScore(this, next);
-        // if(prev.score === score && score > 0) {
-        //     // console.log('equal', prev.score, score);     
-        //     // console.log('earlys', prev.trip.early, next.early);
-        //     return prev.early > next.early ? {trip: next, score: score} : prev;
-        // } else {
-            // console.log('distinct', prev.score, score);            
-            return prev.score < score ? {trip: next, score: score} : prev;
-        // }
+        const score = calculateScore(this, next);      
+        return prev.score < score ? {trip: next, score: score} : prev;
     }, {trip: {}, score: -1});
-    // console.log(bestTrip.trip)
     return bestTrip.trip;
 }
 
@@ -121,14 +107,10 @@ function print() {
 }
 
 function calculateScore(car, trip) {
-    // console.log('input', car.index, trip.index)
     const distanceToBegin = calculateDistance(car.position, trip.start);
-    // console.log('pre', time, distanceToBegin, trip.early)
     const bonusArrival = time + distanceToBegin <= trip.early ? car.bonus : 0;
-    const distanceToEnd = calculateDistance(trip.start, trip.end);
-    // console.log('post', time, distanceToBegin, distanceToEnd, trip.finish)    
+    const distanceToEnd = calculateDistance(trip.start, trip.end);   
     const bonusDistance = time + distanceToBegin + distanceToEnd < trip.finish ? distanceToEnd : 0;
-    // console.log('bonus', bonusArrival, bonusDistance)
     return bonusArrival + bonusDistance;
 }
 
